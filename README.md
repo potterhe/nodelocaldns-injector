@@ -3,7 +3,7 @@
 ## nodelocaldns 解决什么问题
 
 - nodelocaldns 解决的具体问题，请详见官方文档[Using NodeLocal DNSCache in Kubernetes clusters](https://kubernetes.io/docs/tasks/administer-cluster/nodelocaldns/)，需要注意：部署细节与kube-proxy的mode相关。编排业务时，dnsConfig需要与 [dnsPolicy](https://kubernetes.io/zh/docs/concepts/services-networking/dns-pod-service/#pod-%E7%9A%84-dns-%E8%AE%BE%E5%AE%9A) 配置使用
-- 我们的验证是在tke上进行的，但这个文档[在 TKE 集群中使用 NodeLocal DNS Cache](https://cloud.tencent.com/document/product/457/40613) 不能工作，对比官方文档，缺少了一些东西。
+- 我们的验证是在tke上进行的，但这个文档[《在 TKE 集群中使用 NodeLocal DNS Cache》](https://cloud.tencent.com/document/product/457/40613) 不能工作，对比官方文档，缺少了一些东西。
 
 ## 本应用要解决的问题
 
