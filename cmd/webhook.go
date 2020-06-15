@@ -18,13 +18,20 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/potterhe/nodelocaldns-injector/pkg/inject"
 	"github.com/spf13/cobra"
+)
+
+var (
+	certFile string
+	keyFile  string
+	port     int
 )
 
 // webhookCmd represents the webhook command
 var webhookCmd = &cobra.Command{
 	Use:   "webhook",
-	Short: "A brief description of your command",
+	Short: "Starts a HTTP server, useful for inject dnsConfig MutatingAdmissionWebhook",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -33,6 +40,22 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("webhook called")
+
+		parameters := inject.WebhookParameters{
+			CertFile: certFile,
+			KeyFile:  keyFile,
+			Port:     port,
+		}
+
+		wh, err := inject.NewWebhook(parameters)
+		if err != nil {
+			panic(err)
+		}
+
+		err = wh.Serve()
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 
@@ -48,4 +71,11 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// webhookCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	webhookCmd.Flags().StringVar(&certFile, "tls-cert-file", "",
+		"File containing the default x509 Certificate for HTTPS. (CA cert, if any, concatenated after server cert).")
+	webhookCmd.Flags().StringVar(&keyFile, "tls-private-key-file", "",
+		"File containing the default x509 private key matching --tls-cert-file.")
+	webhookCmd.Flags().IntVar(&port, "port", 443,
+		"Secure port that the webhook listens on")
 }
